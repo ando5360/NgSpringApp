@@ -1,4 +1,4 @@
-# Spring Assessment | Call Center SysAdmin App
+# Spring Assessment BT Interview
 Hello my name is Andrew a hopefull candidate of BT Digital. Within this repository I have created a dynamic, easy to maintain pwa for use of administators within a intranet administration system. The application is composed of the following SDKs and build tools  Quarkus, GraalVM, Maven + Swagger / OpenApi yaml schemas + codegen. I have utilisied Java Frameworks including Spring to provide you with a good read of my skills on the subject. The use of the aformentioned technologies ensure robust testable code with high readibility in a time effcient manner.
 ## My Stack 
 ### Backend
