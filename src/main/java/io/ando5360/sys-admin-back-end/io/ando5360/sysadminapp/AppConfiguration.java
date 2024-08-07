@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package org.acme.spring.di;
+package io.ando5360.sysadminapp;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-@Service
-public class MessageProducer {
+@Configuration
+public class AppConfiguration {
 
-    @Value("${greeting.message}")
-    String message;
 
-    public String getPrefix() {
-        return message;
-    }
 }
