@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: Call Center User Groups API
+  version: 1.0.0
+  description: API for managing user groups in a call center environment
+
+paths:
+  /users:
+    get:
+      summary: Retrieve users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:    
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        group:
+          type: string
+          enum:
+            - Management
+            - FrontlineEmployee
+            - SupportTeam
+            - AdministrativeStaff
+            - SpecializedDepartment
+            - ExternalUser
+            - SpecializedRole
+            - ITProjectTeam
+        role:
+          type: string
+          enum:
+            - CLevel
+            - CallCenterManager
+            - TeamLeader
+            - QualityAssuranceManager
+            - OperationsManager
+            - CustomerServiceRep
+            - TechnicalSupportAgent
+            - SalesRep
+            - OutboundTelemarketer
+            - ITSupportStaff
+            - NetworkAdmin
+            - DatabaseAdmin
+            - SecurityAnalyst
+            - HelpDeskTechnician
+            - HRPersonnel
+            - PayrollAdmin
+            - OfficeManager
+            - AdminAssistant
+            - TrainingStaff
+            - WorkforceManagement
+            - BusinessAnalyst
+            - DataAnalyst
+            - RemoteWorker
+            - ContractWorker
+            - Vendor
+            - Auditor
+            - RealTimeAnalyst
+            - CallQualityMonitor
+            - KnowledgeBaseAdmin
+            - ChatbotTechnician
+            - SoftwareDeveloper
+            - QATester
+            - ProjectManager
+            - SystemsIntegrator
+      required:
+        - id
+        - name
+        - email
+        - group
+        - role
