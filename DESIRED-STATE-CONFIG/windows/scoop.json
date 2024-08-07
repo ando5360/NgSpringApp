@@ -1,0 +1,29 @@
+{
+	"buckets" : ["main","extras","nonportable"],
+	"apps":[
+		"unzip", 
+		"zip",
+		"curl",
+		"aria2c", 
+		"sudo",
+		"wget",
+		"gradle", 
+		"go",
+		"quarkus", 
+		"bat",
+		"cht",
+		"busybox", 
+		"unzip", 
+		"zip ",
+		"curl",
+		"aria2c", 
+		"sudo",
+		"wget",
+		"maven",
+		"gradle",
+		"go",
+		"quarku" ,
+		"bat2exe",
+		"cht"
+	]
+}
