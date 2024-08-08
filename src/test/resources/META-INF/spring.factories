@@ -1,0 +1,3 @@
+org.springframework.test.context.ContextCustomizerFactory = io.ando5360.config.\
+    TestContainersSpringContextCustomizerFactory,io.ando5360.config.\
+    RedisTestContainersSpringContextCustomizerFactory
