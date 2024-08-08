@@ -1,0 +1,13 @@
+templateDir: spring_app_assesment
+additionalProperties:
+  artifactId: sysadmin
+  serializableModel: "true"
+  dateLibrary: java8
+files:
+  AUTHORS.md: {"Andy T"}
+  api.daos:
+    templateType: Model
+  api.actions:
+    templateType: API
+  project.docs:
+    templateType: APIDocs
