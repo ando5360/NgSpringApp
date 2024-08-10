@@ -200,7 +200,7 @@ public interface UsersApi {
     )
     default ResponseEntity<Void> usersUserIdPut(
         @Parameter(name = "userId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("userId") Long userId,
-        @Parameter(name = "User", description = "", required = true) @Valid @RequestBody User user
+        @Parameter(name = "User", description = "", required = true) @Validated @RequestBody User user
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 

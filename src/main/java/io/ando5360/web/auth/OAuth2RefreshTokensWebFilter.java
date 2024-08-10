@@ -1,4 +1,4 @@
-package io.ando5360.web.filter;
+package io.ando5360.web.auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
