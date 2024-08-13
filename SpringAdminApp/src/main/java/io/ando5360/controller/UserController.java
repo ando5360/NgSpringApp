@@ -1,7 +1,4 @@
-package io.ando5360.service;
-
-
-
+package io.ando5360.app.service;
 
 @Service
 @Transactional
