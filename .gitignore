@@ -1,2 +1,23 @@
-.todo.md
+
+# Project files
+todo.md
 tmp.vault-creds
+
+# Compiled source
+/target/
+
+# IDE files
+.idea/
+*.iml
+
+# Dependencies
+/.classpath
+/.project
+/.settings/
+
+# Logs
+/log/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
