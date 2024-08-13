@@ -11,7 +11,7 @@ public class UserDetailsService{
     private UserRepository userRepository;
  
     @Autowired
-    private IUserService service;
+    private UserService service;
  
     @Autowired
     private MessageSource messages;

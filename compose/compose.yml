@@ -17,7 +17,7 @@ services:
       - shared
 
   vault:
-    image: ando536/dev-vault
+    image: dev-vault
     container_name: hashivault
     environment:
       VAULT_ADDR: "https://0.0.0.0:8200"
@@ -30,7 +30,7 @@ services:
       - "8201:8201"
     restart: always
     volumes:
-      - ./vault/logs:/vault/logs/:rw
+      - ./vault/logs:/logs/vault:rw
       - ./config:/vault/config/:rw
     cap_add:
       - IPC_LOCK
