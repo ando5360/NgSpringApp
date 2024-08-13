@@ -1,7 +1,8 @@
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(45) NOT NULL,
-  `full_name` varchar(45) NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `surname` varchar(45) NOT NULL,
   `password` varchar(64) NOT NULL,
   `enabled` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),

@@ -1,0 +1,43 @@
+services:
+  openldap:
+    image: osixia/openldap:1.5.0
+    container_name: openldap
+    volumes:
+      - ./ldaps/db:/var/lib/ldap
+      - ./ldaps/schema:/etc/ldap/slapd.d
+    environment:
+      - LDAP_ORGANISATION=example-org
+      - LDAP_DOMAIN=example.org
+      - LDAP_ADMIN_PASSWORD=admin
+      - LDAP_CONFIG_PASSWORD=config
+      - LDAP_RFC2307BIS_SCHEMA=true
+      - LDAP_REMOVE_CONFIG_AFTER_SETUP=true
+      - LDAP_TLS_VERIFY_CLIENT=never
+    networks:
+      - shared
+
+  vault:
+    image: ando536/dev-vault
+    container_name: hashivault
+    environment:
+      VAULT_ADDR: "https://0.0.0.0:8200"
+      VAULT_API_ADDR: "https://0.0.0.0:8200"
+      VAULT_ADDRESS: "https://0.0.0.0:8200"
+      VAULT_UI: true
+      # VAULT_TOKEN:
+    ports:
+      - "8200:8200"
+      - "8201:8201"
+    restart: always
+    volumes:
+      - ./vault/logs:/vault/logs/:rw
+      - ./config:/vault/config/:rw
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config /etc/vault/config.hcl
+    networks:
+      - shared
+
+networks:
+  shared:
+    name: groups-and-users
