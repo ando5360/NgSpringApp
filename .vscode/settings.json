@@ -1,9 +1,0 @@
-{
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "java.project.sourcePaths": [
-        "SpringAdminApp\\src",
-        "SpringAdminApp"
-    ],
-    "java.project.referencedLibraries": [],
-    "java.dependency.packagePresentation": "hierarchical"
-}

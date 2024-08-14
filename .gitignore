@@ -1,7 +1,7 @@
 
 # Project files
 todo.md
-tmp.vault-creds
+../tmp.vault-creds
 
 # Compiled source
 /target/
@@ -14,7 +14,7 @@ tmp.vault-creds
 /.classpath
 /.project
 /.settings/
-
+/node_modules/
 # Logs
 /log/
 

@@ -6,8 +6,8 @@ services:
       - ./ldaps/db:/var/lib/ldap
       - ./ldaps/schema:/etc/ldap/slapd.d
     environment:
-      - LDAP_ORGANISATION=example-org
-      - LDAP_DOMAIN=example.org
+      - LDAP_ORGANISATION=guestapp-com
+      - LDAP_DOMAIN=guestapp.com
       - LDAP_ADMIN_PASSWORD=admin
       - LDAP_CONFIG_PASSWORD=config
       - LDAP_RFC2307BIS_SCHEMA=true
@@ -45,7 +45,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: spring-root
     networks:
       - shared
 
