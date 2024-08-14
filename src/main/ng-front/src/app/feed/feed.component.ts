@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-media-feed',
+  selector: 'app-feed',
   standalone: true,
   imports: [],
   template: `
     <p>
-      media-feed works!
+      feed works!
     </p>
   `,
   styles: ``
 })
-export class MediaFeedComponent {
+export class FeedComponent {
 
 }

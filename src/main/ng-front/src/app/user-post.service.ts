@@ -8,7 +8,7 @@ import { map, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class UserPostService {
-  private springRestURL = 'https://spring-backend/api/media-feed';  // URL to web api
+  private springRestURL = 'https://spring-backend/api';  // URL to web api
   private posts: Array<Post> = [];
 
   constructor(private http: HttpClient) { }
@@ -17,15 +17,18 @@ export class UserPostService {
     return this.http.get(this.springRestURL);
   }
 
-  getPosts(): Observable<[]> {
+  getPosts(): Observable<Post[]> {
     return this.http
       .get(this.springRestURL)
       .pipe(
-        tap(post => console.log(post)),
+
+        tap((post: any) => console.log(post)),
+
         map((responseJSON: { Items: any }) => {
           const data = responseJSON.Items;
           return data.splice(0, 100);
         }),
+
         map((list: Array<Post>) => {
           return list.map(it => {
             let post: Post = {

@@ -17,7 +17,7 @@ services:
       - shared
 
   vault:
-    image: dev-vault
+    image: myvault
     container_name: vault-container
     environment:
       VAULT_ADDR: "https://0.0.0.0:8200"
@@ -39,7 +39,7 @@ services:
       - shared
 
   mysql-db:
-    image: mysql-img
+    image: mysql-dev:live
     restart: always
     container_name: mysql-container
     ports:

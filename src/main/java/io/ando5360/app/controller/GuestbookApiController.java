@@ -1,9 +1,8 @@
 package io.ando5360.app.controller;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import io.ando5360.app.entity.UserPost;
-import io.ando5360.app.service.SecurityService;
+import io.ando5360.app.service.secure.SecurityService;
 import io.ando5360.app.service.UserPostService;
 import io.ando5360.app.service.UserService;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api")
-public class SpringGuestBookAppController<PostService, PostStatus> {
+public class GuestbookApiController<PostService, PostStatus> {
     private UserService userService;
     private UserPostService userPostService;
     private SecurityService securityService;
