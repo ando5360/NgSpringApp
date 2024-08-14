@@ -13,5 +13,19 @@ import { RouterOutlet } from '@angular/router';
   styles: [],
 })
 export class AppComponent {
-  title = 'ng-front';
+  private readonly localStorageJwtService = inject(LocalStorageJwtService);
+  private readonly authStore = inject(AuthStore);
+
+  $user = this.authStore.user;
+  $isLoggedIn = this.authStore.loggedIn;
+
+  ngOnInit() {
+    this.localStorageJwtService
+      .getItem()
+      .pipe(
+        take(1),
+        filter((token) => !!token),
+      )
+      .subscribe(() => this.authStore.getUser());
+  }
 }

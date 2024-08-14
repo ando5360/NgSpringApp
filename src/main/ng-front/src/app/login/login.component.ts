@@ -7,12 +7,13 @@ import { AuthService } from '../auth.service';
   selector: 'app-login',
   standalone: true,
   imports: [],
-  template: `
-    <p>
-      login works!
-    </p>
-  `,
-  styles: ``
+  template:
+  '
+  <div class="container">
+     <h2>Login</h2>
+     <form [formGroup]="formData" (ngSubmit)="onClickSubmit(formData.value)">
+        <div class="form-group">
+  '
 })
 export class LoginComponent {
 
