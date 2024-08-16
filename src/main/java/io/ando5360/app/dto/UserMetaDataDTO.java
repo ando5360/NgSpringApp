@@ -1,11 +1,14 @@
-package main.java.io.ando5360.app.dto;
- 
+package io.ando5360.app.dto;
+
 import io.ando5360.app.pojo.Role;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class UserMetaDataDTO implements Serializable {
+public class UserMetaDataDTO{
     private String description;
     private String funfact;
     private String favouriteFood;
