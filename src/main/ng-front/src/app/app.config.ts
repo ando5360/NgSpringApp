@@ -15,6 +15,6 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions(),
       withComponentInputBinding(),
     ),
-      provideAnimationsAsync(),
+      provideAnimationsAsync(), provideAnimationsAsync(),
   ],
 };

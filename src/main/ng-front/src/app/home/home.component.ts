@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-home',
   template: `
     <div class="grid-container">
-      <h1 class="mat-h1">Dashboard</h1>
+      <h2 class="mat-h2">Home</h2>
       <mat-grid-list cols="2" rowHeight="350px">
         @for (card of cards | async; track card) {
           <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
@@ -81,18 +81,18 @@ export class HomeComponent {
     map(({ matches }) => {
       if (matches) {
         return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
+          { title: 'Post', cols: 1, rows: 1 },
+          { title: 'Advert', cols: 1, rows: 1 },
+          { title: 'Post', cols: 1, rows: 1 },
+          { title: 'System Msg', cols: 1, rows: 1 }
         ];
       }
 
       return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 }
+        { title: 'Post', cols: 1, rows: 2 },
+        { title: 'Advert', cols: 1, rows: 1 },
+        { title: 'Post', cols: 1, rows: 1 },
+        { title: 'System Msg', cols: 1, rows: 1 }
       ];
     })
   );
