@@ -38,8 +38,8 @@ services:
     networks:
       - shared
 
-  mysql-db:
-    image: mysql-dev:live
+  mysql-dev:
+    image: mysql:dev
     restart: always
     container_name: mysql-container
     ports:

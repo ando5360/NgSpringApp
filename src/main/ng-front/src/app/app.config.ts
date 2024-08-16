@@ -11,26 +11,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideRouter(
-      [
-        {
-          path: '',
-          redirectTo: 'home',
-          pathMatch: 'full',
-        },
-        {
-          path: 'home',
-          loadComponent: () => import('/home/home.component.ts').then((m) => m.HomeComponent),
-        },
-        {
-          path: 'login',
-          loadComponent: () => import().then((m) => m.LoginComponent),
-        }
-      ],
+      routes,
       withViewTransitions(),
       withComponentInputBinding(),
     ),
-    provideHttpClient(withInterceptors([errorHandlingInterceptor, tokenInterceptor])),
-    { provide: API_URL, useValue: environment.api_url }, 
       provideAnimationsAsync(),
   ],
 };

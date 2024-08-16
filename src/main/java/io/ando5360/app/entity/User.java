@@ -23,7 +23,6 @@ public class User implements Serializable {
 	@Column(name = "USER_ID")
 	private Long userId;
 
-	@Column(name = "USERNAME")
 	private String username;
 
 	@Column(name = "PASSWORD")

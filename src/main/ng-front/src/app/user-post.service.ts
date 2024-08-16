@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { Post } from './shared/Message';
+import { Message } from './shared/message';
 import { map, tap } from 'rxjs';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { map, tap } from 'rxjs';
 })
 export class UserPostService {
   private springRestURL = 'https://spring-backend/api';  // URL to web api
-  private posts: Array<Post> = [];
+  private posts: Array<Message> = [];
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +17,7 @@ export class UserPostService {
     return this.http.get(this.springRestURL);
   }
 
-  getPosts(): Observable<Post[]> {
+  getPosts(): Observable<Message[]> {
     return this.http
       .get(this.springRestURL)
       .pipe(
@@ -29,12 +29,13 @@ export class UserPostService {
           return data.splice(0, 100);
         }),
 
-        map((list: Array<Post>) => {
+        map((list: Array<Message>) => {
           return list.map(it => {
-            let post: Post = {
-              Author: it.Author,
-              Date: it.Date,
-              Message: it.Message
+            let post: Message = {
+              author: it.author,
+              timestamp: it.timestamp,
+              content: it.content,
+              origin: roles.Admin
             };
             return post;  // Corrected from 'onmessage' to 'post'
           });

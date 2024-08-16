@@ -17,16 +17,15 @@ public class UserService extends UserMetadataService {
 		throws UsernameNotFoundException 
 	{
 		User user = userRepository
-			.findByUserName(username)
+			.findByUsername(username)
 			.get();
-
 		return user;
 
 	}
 
 	public User createUser(User user) throws Exception {
 
-		Optional<User> userOpt = userRepository.findByUserName(user.getUsername());
+		Optional<User> userOpt = userRepository.findByUsername(user.getUsername());
 		if (userOpt.isPresent())
 		{
 			throw new Exception("Record already exists! Please try different User name");

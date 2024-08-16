@@ -13,8 +13,8 @@ export class AuthService {
 
   private apiUrl = 'https://localhost:8200'; // Your API URL
 
-  login(username: string, password: string): Observable<boolean> {
-    return this.http.post<HttpResponse<User>>(
+  login(username: string, password: string): void {
+    this.http.post<HttpResponse<User>>(
       environment.vault_url + '/auth/userpass/login/' + username, 
       {password}
     ).pipe(
@@ -44,12 +44,6 @@ export class AuthService {
     return localStorage.getItem('authToken');
   }
 
-  signup(): Observable<any> {
-    return this.http.post(this.apiUrl + '/signup', User)
-      .pipe(
-        catchError(this.handleError('signup', []))
-      );
-  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
