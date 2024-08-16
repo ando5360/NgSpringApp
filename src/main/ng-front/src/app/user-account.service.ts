@@ -8,8 +8,7 @@ import { User } from './shared/user';
 })
 export class UserAccountService {
   
-  constructor(private http: HttpClient) { }
-  private springRestURL = 'https://spring-backend/api';  // URL to web api
+  constructor(private http: HttpClient) { } // URL to web api
   private user: User;
 
   getResponse(): Observable<any>{

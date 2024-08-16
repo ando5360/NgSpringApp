@@ -7,7 +7,7 @@ storage "file" {
 
 listener "tcp" {
   address = "[::]:8200"
-  tls_disable = "false"
+  tls_disable = "true"
   tls_cert_file = "/certs/vault.crt"
   tls_key_file  = "/certs/vault.key"
 }

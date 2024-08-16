@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from '../environment/environment';
+import { User } from './shared/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +14,20 @@ export class AuthService {
   private apiUrl = 'https://localhost:8200'; // Your API URL
 
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { username, password })
-      .pipe(
-        tap(response => localStorage.setItem('authToken', response.token)),
-        map(response => !!response.token),
+    return this.http.post<HttpResponse<User>>(
+      environment.vault_url + '/auth/userpass/login/' + username, 
+      {password}
+    ).pipe(
+        tap(response => {
+          if (response.status === 200) {
+            console.log("login successful");
+            localStorage.setItem('authToken', response.headers.get('X-Vault-Token') || '');
+            return true;
+          } else {
+            console.log("login failed");
+            return false;
+          }
+        }),
         catchError(this.handleError<boolean>('login', false))
       );
   }
@@ -30,6 +42,13 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('authToken');
+  }
+
+  signup(): Observable<any> {
+    return this.http.post(this.apiUrl + '/signup', User)
+      .pipe(
+        catchError(this.handleError('signup', []))
+      );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
