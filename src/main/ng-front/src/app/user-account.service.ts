@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from './shared/user';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +8,4 @@ import { User } from './shared/user';
 export class UserAccountService {
   
   constructor(private http: HttpClient) { } // URL to web api
-  private user: User;
-
-  getResponse(): Observable<any>{
-    return this.http.get();
-  }
 }

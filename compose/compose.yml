@@ -6,8 +6,8 @@ services:
       - ./ldaps/db:/var/lib/ldap
       - ./ldaps/schema:/etc/ldap/slapd.d
     environment:
-      - LDAP_ORGANISATION=guestapp-com
-      - LDAP_DOMAIN=guestapp.com
+      - LDAP_ORGANISATION=guestbook-io
+      - LDAP_DOMAIN=guestbook.io
       - LDAP_ADMIN_PASSWORD=admin
       - LDAP_CONFIG_PASSWORD=config
       - LDAP_RFC2307BIS_SCHEMA=true
@@ -17,14 +17,13 @@ services:
       - shared
 
   vault:
-    image: myvault:notls
+    image: hashicorp/vault
     container_name: vault-container
     environment:
       VAULT_ADDR: "https://0.0.0.0:8200"
       VAULT_API_ADDR: "https://0.0.0.0:8200"
       VAULT_ADDRESS: "https://0.0.0.0:8200"
       VAULT_UI: true
-      # VAULT_TOKEN:
     ports:
       - "8200:8200"
       - "8201:8201"
@@ -34,16 +33,18 @@ services:
       - ./config:/vault/config/:rw
     cap_add:
       - IPC_LOCK
-    entrypoint: vault server -config /etc/vault/config.hcl
+    entrypoint: vault server -config /vault/config/config.hcl
     networks:
       - shared
 
   mysql-dev:
-    image: mysql:dev
+    image: mysql
     restart: always
     container_name: mysql-container
     ports:
       - "3306:3306"
+    volumes:
+      - ./config:/docker-entrypoint-initdb.d/:rw
     environment:
       MYSQL_ROOT_PASSWORD: spring-root
     networks:

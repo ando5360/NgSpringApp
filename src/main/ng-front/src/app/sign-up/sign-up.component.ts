@@ -14,65 +14,70 @@ import {
   FormsModule,
   ReactiveFormsModule,
   FormGroup,
+  FormArray,
   FormSubmittedEvent,
 } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { filter } from 'rxjs';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-sign-up',
   standalone: true,
   imports: [
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
+    FormsModule, 
+    MatFormFieldModule, 
     MatInputModule, 
     ReactiveFormsModule,
-    FormsModule, 
     MatIconModule,
     RouterModule
   ],
   template: `
-  <div class="parent">
-    <div class="user-actions-col">
-      <mat-card class="login" appearance="raised">
-        <mat-card-header>
-          <mat-card-title>Welcome</mat-card-title>
-          <mat-card-subtitle class="teko banner">Log in</mat-card-subtitle>
-        </mat-card-header>
-        <form class="form-width" [formGroup]="loginForm" >
-            <mat-form-field class="user-form">
-              <mat-label>Username</mat-label>
-              <input type="username" matInput placeholder="username" formControlName="username">
-            </mat-form-field>
-            <mat-form-field class="user-form">
-              <mat-label>Password</mat-label>
-              <input type="password" matInput placeholder="****" style="font-weight: 400" formControlName="password">
-            </mat-form-field>
-            <mat-hint class="teko">
-              Or sign in with ...
-            </mat-hint><br>
-            <button class="alt-login" mat-button></button>     
-          <mat-card-actions>
-            <button mat-fab style="margin: auto;" extended>
-              <mat-icon>login</mat-icon>
-              Log in
-            </button>
+    <div class="parent">
+      <div class="user-actions-col">
+        <mat-card appearance="raised" class="signup-container" style="background-color: #f4bc1c;">
+              <mat-card-header class="mat-card-form">
+                <mat-card-title style="margin: auto; padding: auto">Welcome</mat-card-title>
+                <mat-card-subtitle class="teko banner">Sign up</mat-card-subtitle>
+              </mat-card-header>
+              <form class="form-width" [formGroup]="signupForm" >
+                <mat-form-field class="user-form">
+                  <mat-label>Username</mat-label>
+                  <input type="username" matInput placeholder="username"  formControlName="username">
+                </mat-form-field>
+                <mat-form-field class="user-form">
+                  <mat-label>Email</mat-label>
+                  <input type="email" matInput placeholder="Ex. pat@example.com" formControlName="email">
+                </mat-form-field>
+                <mat-form-field class="user-form">
+                  <mat-label>Password</mat-label>
+                  <input type="password" matInput placeholder="************"  formControlName="password">
+                </mat-form-field>
+                <mat-hint class="teko">
+                  Or sign in with ...
+                </mat-hint><br>
+                <button class="alt-login" mat-button></button>    
+            <mat-card-actions>
+              <button style="margin: auto" type="submit" mat-fab extended>
+                <mat-icon>login</mat-icon>
+                Sign up
+              </button>
+            </mat-card-actions>
+            </form>
+        </mat-card>
+        <mat-card appearance="raised" style="background-color: #f4bc1c; background-image: radial-gradient(circle, #F180FF, #FD8BD9  53%, #7742B2 100%); width: 100%;">
+          <mat-card-header>
+            <mat-card-title class="teko" style="text-decoration: underline; font-size: 28px">Log in</mat-card-title>
+            <mat-card-subtitle class="teko" style="font-size: 22px">Already have an account? Login here.</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-actions align="end">
+            <button mat-button [routerLink]="['/login']">Log in</button>
           </mat-card-actions>
-        </form>
-      </mat-card>
-      <br>
-      <mat-card appearance="raised" style="background-color: #f4bc1c;">
-        <mat-card-header>
-          <mat-card-title class="form-title teko">Sign Up</mat-card-title>
-          <mat-card-subtitle class="teko" style="font-size: 22px">Havent got an account? Sign up here.</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-actions align="end">
-          <button mat-button [routerLink]="['/signup']">Sign up</button>
-        </mat-card-actions>
-      </mat-card>
-  </div>
+        </mat-card>
+      </div>
+    </div>
   `,
   styles: `
     .mat-card-form{
@@ -106,30 +111,23 @@ import { RouterModule } from '@angular/router';
       font-size: 18px; 
       text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
     }
-    .form-title{
-      text-decoration: underline; 
-      font-size: 28px
-    }
     .login{
       text-align: center;
       align-items: center; 
       background-image: radial-gradient(circle, #F180FF, #FD8BD9  53%, #7742B2 100%);
     }
-
     .teko {
       font-family: "Teko", sans-serif;
       font-optical-sizing: auto;
       font-weight: 500;
       font-style: normal;
     }
-
     .signup-container{
       text-align: center; 
       align-items: center: 
       width: 100%; 
       justify-content: center;
     }
-
     .alt-login{
       align-items: center; 
       justify-content: center; 
@@ -166,8 +164,6 @@ import { RouterModule } from '@angular/router';
       display: flex;
       font-weight: bold;
     }
-
-
     .user-form {
       min-width: 150px;
       max-width: 500px;
@@ -175,39 +171,25 @@ import { RouterModule } from '@angular/router';
       margin: 10px 0px 10px 0px;
       font-weight: bold;
     }
-
-
     .form-width {
       width: 100%;
       padding: 25px;
     }
-  `
+    `
 })
-export class LoginComponent {
-  constructor(private router: Router, private authService : AuthService) { }
-
-  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-  loginForm = new FormGroup({
+export class SignUpComponent {
+  signupForm = new FormGroup({
     username: new FormControl(''),
+    email: new FormControl(''),
     password: new FormControl('')
   });
+  constructor(private router: Router, private authService : AuthService) { }
 
-  matcher = new MyErrorStateMatcher();
   ngOnInit() {
-    this.loginForm.events
+    //this.signupForm.valueChanges.subscribe((value) => console.log('Value:', value));
+    this.signupForm.events
     .pipe(filter((event) => event instanceof FormSubmittedEvent))
     .subscribe((event) => this.authService.signup(event.source.value.username, event.source.value.password));
   }
-
-  onClickSubmit(data: any) {
-
-  }
 }
-
 /** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}

@@ -1,12 +1,9 @@
 export class User {
-    username: String
-    password: String
-    passwordHash: String
-
-    constructor() {
-        this.username = "";
-        this.password = "";
-        this.passwordHash = "";
+    entityId: string;
+    accessorId: string;
+  
+    constructor(entityId: string, accessorId: string) {
+      this.entityId = entityId;
+      this.accessorId = accessorId;
     }
-    
 }

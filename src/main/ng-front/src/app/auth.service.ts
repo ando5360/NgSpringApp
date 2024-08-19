@@ -4,44 +4,78 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../environment/environment';
 import { User } from './shared/user';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-  private apiUrl = 'https://localhost:8200'; // Your API URL
+  headers = new HttpHeaders()
+  .set('content-type', 'application/json');
+ 
 
-  login(username: string, password: string): void {
-    this.http.post<HttpResponse<User>>(
-      environment.vault_url + '/auth/userpass/login/' + username, 
-      {password}
-    ).pipe(
+  signup(username: string, password: string): void {
+    console.log("signup triggered");
+    const url = `${environment.api_url}/auth/users/create/${username}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const body = { password: password };
+
+    this.http.post<User>(url, body, { headers, observe: 'response' })
+      .pipe(
         tap(response => {
           if (response.status === 200) {
-            console.log("login successful");
-            localStorage.setItem('authToken', response.headers.get('X-Vault-Token') || '');
-            return true;
+            localStorage.setItem("accessorId", response.body?.accessorId ?? ""); 
+            localStorage.setItem("entityId", response.body?.entityId ?? "");
+            this.router.navigate(['/home']); // Redirect to home
           } else {
-            console.log("login failed");
-            return false;
+            console.log(response.body);
           }
         }),
-        catchError(this.handleError<boolean>('login', false))
-      );
+        catchError(this.handleError('signup', false))
+      )
+      .subscribe(); // Ensure you subscribe to the observable
+  }
+
+  login(username: string, password: string): void {
+    console.log("login triggered");
+    const url = `${environment.api_url}/auth/users/${username}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const body = { password: password };
+
+    this.http.post<User>(url, body, { headers, observe: 'response' })
+      .pipe(
+        tap(response => {
+          if (response.status === 200) {
+            localStorage.setItem("accesorId", response.body?.accessorId ?? ""); 
+            localStorage.setItem("entityId", response.body?.entityId ?? "");
+          } else {
+            console.log(response.body);
+            console.log();
+          }
+        }),
+        catchError(this.handleError('signup', false))
+      )
+      .subscribe(); // Ensure you subscribe to the observable
   }
 
   logout(): void {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("accesorId")
+    localStorage.removeItem('entityId');
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken');
+    return !!localStorage.getItem('entityId');
   }
 
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('entityId');
   }
 
 

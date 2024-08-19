@@ -1,45 +1,61 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { Message } from './shared/message';
-import { map, tap } from 'rxjs';
+import { catchError, map, tap } from 'rxjs';
+import { User } from './shared/user';
+import { UserPost } from './shared/user-post';
+import { environment } from '../environment/environment';
+import { PostSubmission } from './shared/post-submission';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserPostService {
-  private springRestURL = 'https://spring-backend/api';  // URL to web api
-  private posts: Array<Message> = [];
 
   constructor(private http: HttpClient) { }
 
-  getResponse(): Observable<any>{
-    return this.http.get(this.springRestURL);
+  submitPost(title: string, content: string): Observable<number> {
+    console.log("user post triggered");
+    console.log(localStorage.getItem("entityId"));
+    const url = `${environment.api_url}/content/users/post`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const body = new PostSubmission(title, content);
+
+    return this.http.post(url, body, { headers, observe: 'response' })
+    .pipe(
+      tap(response => {
+        if (response.status === 200) {
+          console.log("post successful");
+        } else {
+          console.log("post failed");
+        }
+      }),
+      map(response => response.status)
+    ); // Ensure you subscribe to the observable
   }
 
-  getPosts(): Observable<Message[]> {
-    return this.http
-      .get(this.springRestURL)
-      .pipe(
-
-        tap((post: any) => console.log(post)),
-
-        map((responseJSON: { Items: any }) => {
-          const data = responseJSON.Items;
-          return data.splice(0, 100);
-        }),
-
-        map((list: Array<Message>) => {
-          return list.map(it => {
-            let post: Message = {
-              author: it.author,
-              timestamp: it.timestamp,
-              content: it.content,
-              origin: roles.Admin
-            };
-            return post;  // Corrected from 'onmessage' to 'post'
-          });
-        })
-      );
+  getPosts(): Observable<UserPost[]> {
+    console.log("user post triggered");
+    const url = `${environment.api_url}/content/users/post/all`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.get(url, { headers, observe: 'response' })
+    .pipe(
+      tap(response => {
+        if (response.status === 200) {
+          console.log(response.body);
+        } else {
+          console.log("post failed");
+          console.log(response.body);
+          console.log(response);
+        }
+      }),
+      map(response => response.body as UserPost[]) // Map the response body to Post[]
+    ); // Ensure you subscribe to the observable
   }
+
 }
