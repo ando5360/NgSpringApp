@@ -45,15 +45,15 @@ import { RouterModule } from '@angular/router';
               <form class="form-width" [formGroup]="signupForm" >
                 <mat-form-field class="user-form">
                   <mat-label>Username</mat-label>
-                  <input type="username" matInput placeholder="username"  formControlName="username">
+                  <input type="username" matInput placeholder="username"  style="font-weight: 400" formControlName="username">
                 </mat-form-field>
                 <mat-form-field class="user-form">
                   <mat-label>Email</mat-label>
-                  <input type="email" matInput placeholder="Ex. pat@example.com" formControlName="email">
+                  <input type="email" matInput placeholder="Ex. pat@example.com" style="font-weight: 400" formControlName="email">
                 </mat-form-field>
                 <mat-form-field class="user-form">
                   <mat-label>Password</mat-label>
-                  <input type="password" matInput placeholder="************"  formControlName="password">
+                  <input type="password" matInput placeholder="************" style="font-weight: 400" formControlName="password">
                 </mat-form-field>
                 <mat-hint class="teko">
                   Or sign in with ...

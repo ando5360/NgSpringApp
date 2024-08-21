@@ -13,7 +13,7 @@ public class AliasDTO {
     private String lastUpdateTime;
     private boolean local;
     private Object mergedFromCanonicalIds;
-    private Object metadata;
+    private VaultEntityMetaDataDTO metadata;
     private String mountAccessor;
     private String mountPath;
     private String mountType;

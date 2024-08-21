@@ -18,7 +18,7 @@ public class VaultService {
                 .defaultHeader(HttpHeaders.ACCEPT, "application/json")
                 .defaultHeader("X-Vault-Token", "XXX")
                 .build();
-}
+    }
 
     public String getUsernameByEntityId(String entityId) {
         VaultLookupDTO response = this.vaultClient.post()
@@ -33,9 +33,10 @@ public class VaultService {
                     .getAliases()
                     .stream()
                     .filter(alias -> "userpass".equals(alias.getMountType()))
-                    .map(AliasDTO::getName)
+                    .map(AliasDTO::getMetadata)
                     .findFirst()
-                    .orElse(null); // Return null if no match is found
+                    .get()
+                    .getUsername();
         }
         return null;
 

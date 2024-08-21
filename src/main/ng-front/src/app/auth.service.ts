@@ -68,6 +68,10 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem("accesorId")
     localStorage.removeItem('entityId');
+    this.router.navigate([this.router.url])
+    .then(() => {
+      window.location.reload();
+    });
   }
 
   isLoggedIn(): boolean {

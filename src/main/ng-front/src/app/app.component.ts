@@ -31,7 +31,7 @@ import { map } from 'rxjs';
         <button mat-mini-fab class="mobile-burger" (click)="drawer.toggle()" aria-label="Open side nav" style="margin: 10px;">
             <mat-icon>menu</mat-icon>
         </button>
-        <ul class="navbar-nav menu-items">
+        <ul class="navbar-nav menu-items" *ngIf="isLoggedIn()" >
           <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
@@ -42,12 +42,11 @@ import { map } from 'rxjs';
             <a class="nav-link" href="#">Settings</a>
           </li>     
         </ul>
-        <form class="form-inline search-form">
+        <form class="form-inline search-form" *ngIf="isLoggedIn()" >
           <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="margin-right: 5px;">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <button mat-raised-button class="amber-button menu-items account-actions" *ngIf="isLoggedIn()" (click)="logout()">Log out</button>
-        <button mat-raised-button class="green-button menu-items account-actions" *ngIf="!isLoggedIn()">Log in</button>
        </nav>    
       <router-outlet/>
     </mat-drawer-content>

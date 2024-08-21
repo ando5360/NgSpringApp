@@ -44,11 +44,11 @@ import { RouterModule } from '@angular/router';
         <form class="form-width" [formGroup]="loginForm" >
             <mat-form-field class="user-form">
               <mat-label>Username</mat-label>
-              <input type="username" matInput placeholder="username" formControlName="username">
+              <input type="username" matInput placeholder="username"  style="font-weight: 400"  formControlName="username">
             </mat-form-field>
             <mat-form-field class="user-form">
               <mat-label>Password</mat-label>
-              <input type="password" matInput placeholder="****" style="font-weight: 400" formControlName="password">
+              <input type="password" matInput placeholder="*********" style="font-weight: 400" formControlName="password">
             </mat-form-field>
             <mat-hint class="teko">
               Or sign in with ...
