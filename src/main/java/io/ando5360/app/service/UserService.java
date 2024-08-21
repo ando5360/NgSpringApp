@@ -48,7 +48,6 @@ public class UserService {
 		// TODO: Check if user has active session via accessor ID.
 		List<Object[]> results = entityManager.createNativeQuery("SELECT POST_ID, USER_ID, TITLE, CONTENT FROM posts")
 				.getResultList();
-
 		results.stream()
 				.map(this::mapToUserPostDTO)
 				.toList()

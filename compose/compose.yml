@@ -1,21 +1,4 @@
 services:
-  openldap:
-    image: osixia/openldap:1.5.0
-    container_name: ldap-container
-    volumes:
-      - ./ldaps/db:/var/lib/ldap
-      - ./ldaps/schema:/etc/ldap/slapd.d
-    environment:
-      - LDAP_ORGANISATION=guestbook-io
-      - LDAP_DOMAIN=guestbook.io
-      - LDAP_ADMIN_PASSWORD=admin
-      - LDAP_CONFIG_PASSWORD=config
-      - LDAP_RFC2307BIS_SCHEMA=true
-      - LDAP_REMOVE_CONFIG_AFTER_SETUP=true
-      - LDAP_TLS_VERIFY_CLIENT=never
-    networks:
-      - shared
-
   vault:
     image: hashicorp/vault
     container_name: vault-container
@@ -29,7 +12,6 @@ services:
       - "8201:8201"
     restart: always
     volumes:
-      - ./vault/logs:/logs/vault:rw
       - ./config:/vault/config/:rw
     cap_add:
       - IPC_LOCK

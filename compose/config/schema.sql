@@ -1,11 +1,5 @@
-CREATE USER 'vaultservice' @'%' IDENTIFIED BY 'tmp-password-vault';
-GRANT ALL privileges ON *.* TO 'vaultservice'@'%' with grant option;
-
 CREATE USER 'javaservice' @'%' IDENTIFIED BY 'tmp-password-java';
-GRANT ALL privileges ON *.* TO 'javaservice'@'%' with grant option;
-
-CREATE USER '' @'%' IDENTIFIED BY 'tmp-password-vault';
-GRANT ALL privileges ON *.* TO 'vaultservice'@'%' with grant option;
+GRANT ALL privileges ON *.* TO 'javaservice'@'%' with grant option;;
 
 CREATE DATABASE app;
 USE app;

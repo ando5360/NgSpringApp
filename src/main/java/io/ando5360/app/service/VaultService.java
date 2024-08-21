@@ -18,7 +18,7 @@ public class VaultService {
                 .defaultHeader(HttpHeaders.ACCEPT, "application/json")
                 .defaultHeader("X-Vault-Token", "XXX")
                 .build();
-    }
+}
 
     public String getUsernameByEntityId(String entityId) {
         VaultLookupDTO response = this.vaultClient.post()
