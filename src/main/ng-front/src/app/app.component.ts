@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,10 +7,11 @@ import { AuthService } from './auth.service';
 import { CommonModule } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatSidenavModule,  MatButtonModule,MatIconModule, CommonModule],
+  imports: [RouterOutlet, MatSidenavModule,  MatButtonModule,MatIconModule, CommonModule,RouterModule],
   template: `
 <mat-drawer-container class="draw-container">
   <mat-drawer mode="over"  #drawer>
@@ -36,16 +37,9 @@ import { map } from 'rxjs';
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">My Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Settings</a>
-          </li>     
+            <a class="nav-link"  [routerLink]="['/settings']">Settings</a>
+          </li> 
         </ul>
-        <form class="form-inline search-form" *ngIf="isLoggedIn()" >
-          <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="margin-right: 5px;">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
         <button mat-raised-button class="amber-button menu-items account-actions" *ngIf="isLoggedIn()" (click)="logout()">Log out</button>
        </nav>    
       <router-outlet/>
@@ -136,15 +130,25 @@ import { map } from 'rxjs';
 `
 })
 export class AppComponent {
-  private breakpointObserver = inject(BreakpointObserver);
   sidemenu = false;
+  private readonly oidcSecurityService = inject(OidcSecurityService);
+
+  ngOnInit() {
+    this.oidcSecurityService.authorize();
+  }
+
+  login() {
+    this.oidcSecurityService.authorizeWithPopUp()
+    .subscribe(({ isAuthenticated, userData, accessToken, errorMessage }) => {});
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 
 
   constructor(private authService : AuthService) { }
-  isLoggedIn(){
+  isLoggedIn() : Boolean{
     return this.authService.isLoggedIn();
-  }
-  logout(){
-    this.authService.logout();
   }
 }

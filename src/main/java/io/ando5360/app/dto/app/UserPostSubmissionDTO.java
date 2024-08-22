@@ -1,4 +1,4 @@
-package io.ando5360.app.dto;
+package io.ando5360.app.dto.app;
 
 import java.io.Serializable;
 

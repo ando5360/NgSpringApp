@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './shared/auth-guard';
-import { NotAuthGuard } from './shared/not-auth-guard';
+import { AuthGuard } from './auth-guard';
+import { NotAuthGuard } from './not-auth-guard';
 
 export const routes: Routes =  [
     {
@@ -14,6 +14,11 @@ export const routes: Routes =  [
       canActivate: [AuthGuard] 
     },
     {
+      path: 'settings',
+      loadComponent: () => import('./user-settings/user-settings.component').then((m) => m.SettingsComponent),
+      canActivate: [AuthGuard] 
+    },
+    {
       path: 'login',
       loadComponent: () => import('./login/login.component').then((m) => m.LoginComponent),
       canActivate: [NotAuthGuard] 
@@ -23,4 +28,5 @@ export const routes: Routes =  [
       loadComponent: () => import('./sign-up/sign-up.component').then((m) => m.SignUpComponent),
       canActivate: [NotAuthGuard] 
     }
+
   ];

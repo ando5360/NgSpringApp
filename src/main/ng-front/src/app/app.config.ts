@@ -5,7 +5,9 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { environment } from '../environment/environment';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { AuthGuard } from './shared/auth-guard';
+import { AuthGuard } from './auth-guard';
+import { authConfig } from './auth/auth.config';
+import { provideAuth } from 'angular-auth-oidc-client';
 
 
 export const appConfig: ApplicationConfig = {
@@ -18,6 +20,6 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding(),
     ),
       provideAnimationsAsync(), 
-      provideAnimationsAsync(),
+      provideAnimationsAsync(), provideAuth(authConfig), 
   ],
 };

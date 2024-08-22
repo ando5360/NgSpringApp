@@ -1,0 +1,10 @@
+{
+    "/vault-proxy": {
+      "target": "http://0.0.0.0:8200",
+      "secure": false
+    },
+    "/ui": {
+        "target": "http://0.0.0.0:8200/ui",
+        "secure": false
+      }
+  }

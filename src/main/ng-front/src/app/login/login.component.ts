@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect, Signal, signal, WritableSignal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import {MatCardModule} from '@angular/material/card';
@@ -17,8 +17,11 @@ import {
   FormSubmittedEvent,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { filter } from 'rxjs';
+import { BehaviorSubject, filter, tap } from 'rxjs';
 import { RouterModule } from '@angular/router';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { TextWobbleComponent } from '../animations/text-wobble/text-wobble.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +34,9 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     FormsModule, 
     MatIconModule,
-    RouterModule
+    RouterModule,
+    TextWobbleComponent,
+    CommonModule,
   ],
   template: `
   <div class="parent">
@@ -42,6 +47,7 @@ import { RouterModule } from '@angular/router';
           <mat-card-subtitle class="teko banner">Log in</mat-card-subtitle>
         </mat-card-header>
         <form class="form-width" [formGroup]="loginForm" >
+            <app-text-wobble *ngIf="show403Error" [subject]="get403Status()" [text]="'Theres no account with these credentials.'"></app-text-wobble>
             <mat-form-field class="user-form">
               <mat-label>Username</mat-label>
               <input type="username" matInput placeholder="username"  style="font-weight: 400"  formControlName="username">
@@ -115,21 +121,18 @@ import { RouterModule } from '@angular/router';
       align-items: center; 
       background-image: radial-gradient(circle, #F180FF, #FD8BD9  53%, #7742B2 100%);
     }
-
     .teko {
       font-family: "Teko", sans-serif;
       font-optical-sizing: auto;
       font-weight: 500;
       font-style: normal;
     }
-
     .signup-container{
       text-align: center; 
       align-items: center: 
       width: 100%; 
       justify-content: center;
     }
-
     .alt-login{
       align-items: center; 
       justify-content: center; 
@@ -175,8 +178,6 @@ import { RouterModule } from '@angular/router';
       margin: 10px 0px 10px 0px;
       font-weight: bold;
     }
-
-
     .form-width {
       width: 100%;
       padding: 25px;
@@ -184,19 +185,33 @@ import { RouterModule } from '@angular/router';
   `
 })
 export class LoginComponent {
-  constructor(private router: Router, private authService : AuthService) { }
-
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+  matcher = new MyErrorStateMatcher();
   loginForm = new FormGroup({
     username: new FormControl(''),
     password: new FormControl('')
   });
+  show403Error = false;
 
-  matcher = new MyErrorStateMatcher();
+  constructor(private router: Router, private authService : AuthService) { }
+
   ngOnInit() {
     this.loginForm.events
     .pipe(filter((event) => event instanceof FormSubmittedEvent))
-    .subscribe((event) => this.authService.signup(event.source.value.username, event.source.value.password));
+    .subscribe((event) => { 
+      this.authService.login(event.source.value.username, event.source.value.password);
+      },
+      err => {
+        console.error('Error occurred:', err);
+        // Handle error if needed
+      });
+    this.get403Status().subscribe((bool) => {
+      this.show403Error = bool;
+    }
+    );
+  }
+  get403Status() : BehaviorSubject<boolean> {
+    return this.authService.err403;
   }
 
   onClickSubmit(data: any) {

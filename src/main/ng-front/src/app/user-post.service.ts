@@ -2,10 +2,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, map, tap } from 'rxjs';
-import { User } from './shared/user';
-import { UserPost } from './shared/user-post';
+import { User } from './common/user';
+import { UserPost } from './common/user-post';
 import { environment } from '../environment/environment';
-import { PostSubmission } from './shared/post-submission';
+import { PostSubmission } from './common/post-submission';
 
 
 @Injectable({

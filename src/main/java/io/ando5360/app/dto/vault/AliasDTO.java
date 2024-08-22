@@ -1,4 +1,4 @@
-package io.ando5360.app.dto;
+package io.ando5360.app.dto.vault;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ public class AliasDTO {
     private String lastUpdateTime;
     private boolean local;
     private Object mergedFromCanonicalIds;
-    private VaultEntityMetaDataDTO metadata;
+    private Object metadata;
     private String mountAccessor;
     private String mountPath;
     private String mountType;

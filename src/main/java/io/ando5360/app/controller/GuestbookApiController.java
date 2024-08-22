@@ -1,5 +1,9 @@
 package io.ando5360.app.controller;
-import io.ando5360.app.dto.*;
+import io.ando5360.app.dto.app.UserDTO;
+import io.ando5360.app.dto.app.UserPasswordDTO;
+import io.ando5360.app.dto.app.UserPostDTO;
+import io.ando5360.app.dto.app.UserPostSubmissionDTO;
+import io.ando5360.app.dto.vault.VaultResponseDTO;
 import io.ando5360.app.service.VaultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,11 +52,6 @@ public class GuestbookApiController{
         // TODO: CHECK IF USER HAS ACTIVE SESSION
         // GET USERID FOR ENTITYID
         // WRITE POST TO THE DB
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
         System.out.println(usrPost.getEntityId());
         this.userService.insertUserPost(
                 this.userService.findUserIdByEntityId(usrPost.getEntityId()),
@@ -64,11 +63,6 @@ public class GuestbookApiController{
     @GetMapping("/content/users/post/all")
     List<UserPostDTO> submitUserPost() throws Exception {
         // TODO: CHECK IF USER HAS ACTIVE SESSION
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------");
         return this.userService.getUserPosts();
 
     }

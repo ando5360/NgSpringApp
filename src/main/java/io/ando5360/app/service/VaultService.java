@@ -1,26 +1,27 @@
 package io.ando5360.app.service;
 
-import io.ando5360.app.dto.VaultLookupDTO;
-import io.ando5360.app.dto.VaultResponseDTO;
+import io.ando5360.app.dto.vault.VaultLookupDTO;
+import io.ando5360.app.dto.vault.VaultResponseDTO;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import io.ando5360.app.dto.AliasDTO;
+import io.ando5360.app.dto.vault.AliasDTO;
 
 @Service
 public class VaultService {
 
     RestClient vaultClient;
 
-    VaultService() {
+    VaultService(Environment env) {
         this.vaultClient = RestClient.builder()
                 .baseUrl("http://localhost:8200")
                 .defaultHeader(HttpHeaders.ACCEPT, "application/json")
-                .defaultHeader("X-Vault-Token", "XXX")
+                .defaultHeader("X-Vault-Token", env.getProperty("vault.token"))
                 .build();
     }
 
-    public String getUsernameByEntityId(String entityId) {
+    public String getUsernameByEntityId(String entityId){
         VaultLookupDTO response = this.vaultClient.post()
                 .uri("/v1/identity/lookup/entity")
                 .body("{\"id\" : \"" + entityId + "\"}")
@@ -28,17 +29,10 @@ public class VaultService {
                 .toEntity(VaultLookupDTO.class)
                 .getBody();
 
-        if (response != null && response.getData() != null) {
-            return response.getData()
-                    .getAliases()
-                    .stream()
-                    .filter(alias -> "userpass".equals(alias.getMountType()))
-                    .map(AliasDTO::getMetadata)
-                    .findFirst()
-                    .get()
-                    .getUsername();
+        for(AliasDTO alias : response.getData().getAliases()){
+            return alias.getName();
         }
-        return null;
+        return "anonymous";
 
     }
 
@@ -67,4 +61,8 @@ public class VaultService {
                 .getBody();
 
     }
+
+    // TODO:
+        // DELETE USER
+        // Check for admin policy
 }

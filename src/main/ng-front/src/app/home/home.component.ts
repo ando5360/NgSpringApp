@@ -14,7 +14,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms'; // Add this imp
 import { UserPostService } from '../user-post.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
-import { UserPost } from '../shared/user-post';
+import { UserPost } from '../common/user-post';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -30,27 +32,20 @@ import { UserPost } from '../shared/user-post';
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    CommonModule
+    CommonModule,
+    MatProgressBarModule
   ],
   template: `
       <mat-grid-list cols="2" rowHeight="350px" class="grid-container">
-        @for (card of cards | async; track card) {
-          <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
+          <mat-grid-tile>
             <mat-card class="dashboard-card">
               <mat-card-header>
-                <mat-card-title [ngClass]="{'post-card' : card.form}">
-                  {{card.title}}
-                  <button *ngIf="!card.form" mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu" xPosition="before">
-                    <button mat-menu-item>Expand</button>
-                    <button mat-menu-item>Remove</button>
-                  </mat-menu>
+                <mat-card-title class="post-form" style="font-family: 'Pacifico'">
+                  Stay Worth Posting about?
                 </mat-card-title>
               </mat-card-header>
               <mat-card-content class="dashboard-card-content">      
-                <form *ngIf="card.form" [formGroup]="postForm" class="post-form">
+                <form [formGroup]="postForm" class="post-form">
                   <div class="post-form-row">
                       <input matInput class="title-input" placeholder="Enter your title here" formControlName="postTitle">
                       <button mat-raised-button class="green-button post-button">Post</button>
@@ -58,19 +53,31 @@ import { UserPost } from '../shared/user-post';
                   <textarea matInput  class="post-content" formControlName="postContent"  placeholder="How was your latest isit ? Write your guestbook entry here."></textarea>
                 </form>
               </mat-card-content>
+              <mat-card-footer style="width: 100%; display: flex; justify-content: center; align-items: center;">
+                  <mat-progress-bar mode="determinate" value="40" style="border-radius: 25px; width: 98%;"></mat-progress-bar>
+              </mat-card-footer>
             </mat-card>
           </mat-grid-tile>
-        }
         <mat-grid-tile *ngFor="let post of posts;">
             <mat-card class="dashboard-card">
               <mat-card-header>
-                <mat-card-title>
+                <mat-card-title style="font-family: 'Pacifico'; font-size: 18px; font-weight: 200">
                   {{post.title}}
                 </mat-card-title>
+                <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item>Delete</button>
+                    <button mat-menu-item>Block user</button>
+                  </mat-menu>
               </mat-card-header>
-              <mat-card-content class="dashboard-card-content">      
+              <mat-card-content class="dashboard-card-content" style="font-family: 'Teko'; font-size: 18px; font-weight: 200">      
                 <p>{{post.content}}</p>
               </mat-card-content>
+              <mat-card-footer class="teko" style="text-align: right; padding: 25px 70px 45px 0px; font-size: 28px; font-style: italic">
+                ~ {{post.author}}
+              </mat-card-footer>
             </mat-card>
           </mat-grid-tile>
         
@@ -126,7 +133,6 @@ import { UserPost } from '../shared/user-post';
       margin: auto; 
       margin-bottom: 3px;
     }
-
     .post-button{
       height: 100%; 
       width: 100%; 
@@ -140,17 +146,14 @@ import { UserPost } from '../shared/user-post';
       margin-left: 2px;
       margin-bottom: 7px !important;
     }
-    
     .more-button {
       position: absolute;
       top: 5px;
       right: 10px;
-    }
-    
+    }  
     .dashboard-card-content {
       text-align: center;
     }
-
     @media (max-width: 995px) {
       .grid-container {
         display: flex;
@@ -184,8 +187,8 @@ export class HomeComponent {
     .pipe(filter((event) => event instanceof FormSubmittedEvent))
     .subscribe((event) => {
       this.userPostService.submitPost(
-        event.source.value.postContent, 
-        event.source.value.postTitle
+        event.source.value.postTitle,
+        event.source.value.postContent,
       ).subscribe(
         statusCode => {
           if (statusCode === 200) {

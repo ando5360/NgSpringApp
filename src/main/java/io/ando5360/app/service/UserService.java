@@ -1,8 +1,8 @@
 package io.ando5360.app.service;
 
-import io.ando5360.app.dto.UserPostDTO;
-import io.ando5360.app.dto.UserPostSubmissionDTO;
-import io.ando5360.app.dto.VaultResponseDTO;
+import io.ando5360.app.dto.app.UserPostDTO;
+import io.ando5360.app.dto.app.UserPostSubmissionDTO;
+import io.ando5360.app.dto.vault.VaultResponseDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -10,10 +10,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {

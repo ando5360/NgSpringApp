@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Injectable, signal, WritableSignal } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../environment/environment';
-import { User } from './shared/user';
+import { User } from './common/user';
 import { Router } from '@angular/router';
 
 
@@ -12,12 +12,15 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
+  err403 = new BehaviorSubject(false);
+  err401 = new BehaviorSubject(false);
+  err500 = new BehaviorSubject(false);
 
-  headers = new HttpHeaders()
-  .set('content-type', 'application/json');
- 
-
-  signup(username: string, password: string): void {
+  public is403() : BehaviorSubject<boolean> {
+    return this.err403;
+  }
+  
+  public signup(username: string, password: string): void {
     console.log("signup triggered");
     const url = `${environment.api_url}/auth/users/create/${username}`;
     const headers = new HttpHeaders({
@@ -32,16 +35,14 @@ export class AuthService {
             localStorage.setItem("accessorId", response.body?.accessorId ?? ""); 
             localStorage.setItem("entityId", response.body?.entityId ?? "");
             this.router.navigate(['/home']); // Redirect to home
-          } else {
-            console.log(response.body);
           }
-        }),
-        catchError(this.handleError('signup', false))
+        })
       )
       .subscribe(); // Ensure you subscribe to the observable
   }
 
-  login(username: string, password: string): void {
+  public login(username: string, password: string){
+    this.err403.next(false);
     console.log("login triggered");
     const url = `${environment.api_url}/auth/users/${username}`;
     const headers = new HttpHeaders({
@@ -52,21 +53,26 @@ export class AuthService {
     this.http.post<User>(url, body, { headers, observe: 'response' })
       .pipe(
         tap(response => {
-          if (response.status === 200) {
-            localStorage.setItem("accesorId", response.body?.accessorId ?? ""); 
-            localStorage.setItem("entityId", response.body?.entityId ?? "");
-          } else {
-            console.log(response.body);
-            console.log();
-          }
-        }),
-        catchError(this.handleError('signup', false))
-      )
-      .subscribe(); // Ensure you subscribe to the observable
+          console.log(response.status)
+          this.setCurrentUser(response.body?.accessorId ?? "", response.body?.entityId ?? ""); 
+          }),
+          catchError(err => this.handleError(err))
+      ).subscribe();
   }
 
-  logout(): void {
-    localStorage.removeItem("accesorId")
+  public handleError(error: HttpErrorResponse) {
+    if (error.status === 403) {
+      this.err403.next(true);
+    } else if (error.status === 401) {
+      this.err401.next(true);
+    } else if (error.status === 500) {
+      this.err500.next(true);
+    }
+    return throwError('Something went wrong');
+  }
+
+  public logout(): void {
+    localStorage.removeItem('accesorId')
     localStorage.removeItem('entityId');
     this.router.navigate([this.router.url])
     .then(() => {
@@ -74,19 +80,16 @@ export class AuthService {
     });
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('entityId');
+  public isLoggedIn(): boolean {
+    return true ? (localStorage.getItem('entityId') != "" && localStorage.getItem('entityId') != null) : false;
   }
 
-  getToken(): string | null {
+  public getToken(): string | null {
     return localStorage.getItem('entityId');
   }
 
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(error); // Log the error to the console
-      return of(result as T); // Keep the app running by returning a safe result
-    };
+  private setCurrentUser(accessorId: string, entityId : string): void {
+    localStorage.setItem("accesorId", accessorId); 
+    localStorage.setItem("entityId", entityId);
   }
 }
